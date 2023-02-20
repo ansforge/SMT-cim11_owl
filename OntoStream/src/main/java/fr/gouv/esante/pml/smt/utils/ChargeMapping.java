@@ -973,12 +973,14 @@ public static void chargeCSVTraductionFileBeToList(final String csvFileEn, final
         }
 
         final String id = sb.toString().split("£")[1];
-        if (fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.containsKey(id)) {
-          sb.append("@").append(fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.get(id));
-          fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.put(id, sb.toString());
-        } else {
-          fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.put(id, sb.toString());
-        }
+		/*
+		 * if (fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.containsKey(id)) {
+		 * sb.append("@").append(fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.
+		 * get(id)); fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.put(id,
+		 * sb.toString()); } else {
+		 * fr.gouv.esante.pml.smt.cim10.SKOSToOWL.listTraduction.put(id, sb.toString());
+		 * }
+		 */
 
 
       }

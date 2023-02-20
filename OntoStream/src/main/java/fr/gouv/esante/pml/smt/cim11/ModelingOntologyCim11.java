@@ -88,7 +88,7 @@ public class ModelingOntologyCim11 {
 	    
 	  postCoordinationMMSmodifing(); //pour MMS
 	    
-	    fondationCleanning();
+	  //  fondationCleanning();  //Pour Fondation
 	    
 	    addNotationAndTypeModeling();
 	    cleanning();   //MMS 
@@ -659,7 +659,7 @@ public class ModelingOntologyCim11 {
 	      });
   }
   
-  public static void fondationCleanning() {
+  public static void fondationCleanning() { //pour fondation
 	  
 	  onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    forEach(ax -> {
