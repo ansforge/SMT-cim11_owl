@@ -79,10 +79,5 @@ owlFileName = C:\\Users\\agochath\\Documents\\cim11\\CIM11-V0618.owl
 * En sortie, il y a un fichier:
 
     * `owlFileName` : CIM11 sous format OWL.
-   
-
-
-## Licence
-
-Ce projet est mis à  disposition sous licence [LOv2 ](https://github.com/etalab/licence-ouverte/blob/master/LO.md) par l'ASIP Santé.
+  
 
