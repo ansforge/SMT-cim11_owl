@@ -2,6 +2,7 @@ package fr.gouv.esante.pml.smt;
 
 
 import fr.gouv.esante.pml.smt.cim11.ConcatenateTwoOntologyCim11;
+import fr.gouv.esante.pml.smt.cim11.CorrectionBlockIDOntologyCim11;
 import fr.gouv.esante.pml.smt.cim11.GetICDFromAPI;
 import fr.gouv.esante.pml.smt.cim11.JsonToRDFClient;
 import fr.gouv.esante.pml.smt.cim11.ModelingOntologyFoundationCim11;
@@ -41,6 +42,9 @@ public class Launcher {
     }
     else if ("concatenateCim11".equals(args[0])) {
     	ConcatenateTwoOntologyCim11.main(args);
+    }
+    else if ("finalCim11".equals(args[0])) {
+    	CorrectionBlockIDOntologyCim11.main(args);
     }
     
     
