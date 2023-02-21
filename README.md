@@ -111,5 +111,34 @@ owlModelingFileNameFR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-FR-V2.o
 * En sortie, il y a un fichier:
 
     * `owlModelingFileNameFR` : CIM11 sous format OWL.
+
+
+## Concatenation Ontology CIM11 FR et EN <a id="toowl"></a>
+
+##### 1. Configurations:
+
+Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
+
+```java
+# fichier Ontology CIM11 en Francais sous format OWL générer à l'étape précedante 
+owlModelingFileNameFR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
+# fichier Ontology CIM11 en anglais sous format OWL générer à l'étape précedante
+owlModelingFileNameEN = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-EN-V2.owl
+# fichier Ontology CIM11 FR\EN
+owlModelingFileNameEN_FR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-FR-V2.owl
+```
+
+##### 2. Convertir CIM11 en format OWL:
+
+* Exécuter la commande `java -jar icd11-owl-version.jar concatenateCim11`.
+* Le programme prend en entré le deux  fichier:  
+
+    * `owlModelingFileNameFR` : CIM11 sous format OWL.
+    * `owlModelingFileNameEN` : CIM11 sous format OWL.
+    
+
+* En sortie, il y a un fichier:
+
+    * `owlModelingFileNameEN_FR` : CIM11 sous format OWL.
   
 
