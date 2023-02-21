@@ -626,11 +626,12 @@ public class ModelingOntologyMmsCim11 {
     		    OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(((OWLAnnotationAssertionAxiom) ax).getSubject(), annot);
     			manager.applyChange(new AddAxiom(onto, axiom));
     			
-    			String url = "https://icd.who.int/dev11/f/en#/" + ((OWLAnnotationAssertionAxiom) ax).getSubject().toString();
-    			OWLAnnotationProperty browserUrl = new OWLAnnotationPropertyImpl(ICDVocabulary.browserUrl.getIRI());
-	    		OWLAnnotation annot2 = fact.getOWLAnnotation(browserUrl, fact.getOWLLiteral(url));
-	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(((OWLAnnotationAssertionAxiom) ax).getSubject(), annot2);
-	    		manager.applyChange(new AddAxiom(onto, axiom2));
+    			
+    			//String url = "https://icd.who.int/dev11/f/en#/" + ((OWLAnnotationAssertionAxiom) ax).getSubject().toString();
+    			//OWLAnnotationProperty browserUrl = new OWLAnnotationPropertyImpl(ICDVocabulary.browserUrl.getIRI());
+	    	//	OWLAnnotation annot2 = fact.getOWLAnnotation(browserUrl, fact.getOWLLiteral(url));
+	    		//OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(((OWLAnnotationAssertionAxiom) ax).getSubject(), annot2);
+	    		//manager.applyChange(new AddAxiom(onto, axiom2));
 	    		
     			manager.applyChange(new RemoveAxiom(onto, ax));
 	    		}
