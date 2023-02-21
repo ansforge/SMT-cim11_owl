@@ -23,7 +23,7 @@ GRANT_TYPE = client_credentials
 
 ##### 2. Streaming de CIM11 sous format JSONLD
 
-* Exécuter la commande `java -jar OntoStream-version.jar streamICD` pour streamer CIM11 dans le fichier `jsonFileName`.
+* Exécuter la commande `java -jar icd11-owl-version.jar streamICD` pour streamer CIM11 dans le fichier `jsonFileName`.
 
 ##  Convertir CIM11-JSONLD en format CIM11-RDF/SKOS<a id="jsontordfskos"></a>
 
