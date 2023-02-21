@@ -1,6 +1,12 @@
 # SMT-ICD11
 This repository will contains all scripts used to convert and extract ICD-11 from OMS website to the SMT
 
+##### Rq: Refaire tous les étapes avec modifications dans le fichier 
+`configuration.properties` :
+ ##### cimLanguage = fr 
+  puis
+ ##### cimLanguage = en
+
 
 ## Streaming CIM11 sous format JSONLD<a id="streamingcim"></a>
 
