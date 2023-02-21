@@ -142,6 +142,35 @@ owlModelingFileNameEN_FR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-F
 * En sortie, il y a un fichier:
 
     * `owlModelingFileNameEN_FR` : CIM11 sous format OWL.
+
+
+## Correction Ontology CIM11  <a id="toowl"></a>
+
+##### 1. Configurations:
+
+Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
+
+```java
+
+# fichier Ontology CIM11 FR\EN
+owlModelingFileNameEN_FR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-FR-V2.owl
+# fichier Ontology finale CIM11 FR\EN
+owlModelingFileNameEN_FR_2 = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-FR-V3.owl
+```
+
+##### 2. Convertir CIM11 en format OWL:
+
+* Exécuter la commande `java -jar icd11-owl-version.jar finalCim11`.
+  
+* Le programme prend en entré le deux  fichier:  
+
+    * `owlModelingFileNameEN_FR` : CIM11 sous format OWL.
+    
+    
+
+* En sortie, il y a un fichier:
+
+    * `owlModelingFileNameEN_FR_2` : CIM11 sous format OWL.
    
 
 
