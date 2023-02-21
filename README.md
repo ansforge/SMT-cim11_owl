@@ -34,22 +34,22 @@ GRANT_TYPE = client_credentials
 Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
 
 ```java
-# racine et nom du fichier de label en Anglais.
-labelFileName = C:\\Users\\agochath\\Documents\\cim11\\label-V0419.csv
 # racine et nom du fichier Ontology CIM11 sous format SKOS
-skosFileName = C:\\Users\\agochath\\Documents\\cim11\\cim11SKOS-V0618.xml
+firstSkosFileName = D:\\cim11\\mms\\test\\CIM11-MMS-SKOS-R202301-FR-V1.xml
+# racine et nom du fichier Ontology CIM11 sous format SKOS
+skosFileName = D:\\cim11\\mms\\test\\CIM11-MMS-SKOS-R202301-FR.xml
 # racine et nom du fichier Ontology CIM11 sous format JSON en local
-jsonFileName = C:\\Users\\agochath\\Documents\\cim11\\CIM11JSON-V0419.json
+jsonFileName = D:\\cim11\\mms\\test\\CIM11_JSON_R202301_FR.json
 ```
 
 ##### 2. Convertir CIM11-JSONLD en format CIM11-RDF/SKOS:
 
-* Exécuter la commande `java -jar OntoStream-version.jar json2rdf`.
+* Exécuter la commande `java -jar icd11-owl-version.jar json2rdf`.
 * Le programme prend en entré le fichier `jsonFileName`. 
 * En sortie, il y a deux fichiers:
 
     * `skosFileName` : CIM11 sous format RDF/SKOS.
-    * `labelFileName` : tous les labels de CIM11 en anglais (à  traduire en français).
+    * `labelFileName` : CIM11 sous format RDF/SKOS.
 
 
 ## Convertir CIM11 en format OWL<a id="toowl"></a>
