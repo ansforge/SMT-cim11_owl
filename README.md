@@ -59,27 +59,25 @@ jsonFileName = D:\\cim11\\mms\\test\\CIM11_JSON_R202301_FR.json
 Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
 
 ```java
-# racine et nom du fichier de mapping entre CIM11 et CIM10
-mappingFileName = C:\\Users\\agochath\\Documents\\cim11\\11To10MapToOneCategory.xlsx
-# racine et nom du fichier de label traduites en FranÃ§ais.
-traductionFileName = C:\\Users\\agochath\\Documents\\cim11\\icd11-translations-01.xlsx
 # racine et nom du fichier Ontology CIM11 sous format SKOS
-skosFileName = C:\\Users\\agochath\\Documents\\cim11\\cim11SKOS-V0618.xml
+skosFileName = D:\\cim11\\mms\\test\\CIM11-MMS-SKOS-R202301-FR.xml
 # fichier Ontology CIM11 sous format OWL
-owlFileName = C:\\Users\\agochath\\Documents\\cim11\\CIM11-V0618.owl
+owlFileName = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MM-R202301-FR-V1.owl
+# fichier Ontology CIM11 sous format OWL
+owlFileName1 = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-FR-V0.owl
 ```
 
 ##### 2. Convertir CIM11 en format OWL:
 
-* Exécuter la commande `java -jar OntoStream-version.jar skos2owl`.
-* Le programme prend en entré trois fichiers:  
+* Exécuter la commande `java -jar icd11-owl-version.jar skos2owl`.
+* Le programme prend en entré le fichier:  
 
     * `skosFileName` : CIM11 sous format RDF/SKOS.
-    * `traductionFileName` : tous les labels de CIM11 traduit en français.
-    * `mappingFileName` : fichier de mapping entre cim11 et cim10.
+    
 
 * En sortie, il y a un fichier:
 
     * `owlFileName` : CIM11 sous format OWL.
+    * `owlFileName1` : CIM11 sous format OWL.
   
 
