@@ -1,9 +1,11 @@
 package fr.gouv.esante.pml.smt;
 
 
+import fr.gouv.esante.pml.smt.cim11.ConcatenateTwoOntologyCim11;
 import fr.gouv.esante.pml.smt.cim11.GetICDFromAPI;
 import fr.gouv.esante.pml.smt.cim11.JsonToRDFClient;
-import fr.gouv.esante.pml.smt.cim11.ModelingOntologyCim11;
+import fr.gouv.esante.pml.smt.cim11.ModelingOntologyFoundationCim11;
+import fr.gouv.esante.pml.smt.cim11.ModelingOntologyMmsCim11;
 import fr.gouv.esante.pml.smt.cim11.SKOSToOWL;
 
 public class Launcher {
@@ -26,15 +28,23 @@ public class Launcher {
     	//ModeAccesOntologie.main(args);
     } else if ("ccamTopographie".equals(args[0])) {
     	//TopographieOntologie.main(args);
-    }else if ("modelingCim11".equals(args[0])) {
-    	ModelingOntologyCim11.main(args);
+    }else if ("modelingMmsCim11".equals(args[0])) {
+    	ModelingOntologyMmsCim11.main(args);
     } else if ("skos2owl".equals(args[0])) {
         SKOSToOWL.main(args);
       } else if ("json2rdf".equals(args[0])) {
       JsonToRDFClient.main(args);
-    } else if ("stramICD".equals(args[0])) {
+    } else if ("streamICD".equals(args[0])) {
       GetICDFromAPI.main(args);
-    }/*else if ("setMetadata".equals(args[0])) {
+    }else if ("modelingFoundCim11".equals(args[0])) {
+    	ModelingOntologyFoundationCim11.main(args);
+    }
+    else if ("concatenateCim11".equals(args[0])) {
+    	ConcatenateTwoOntologyCim11.main(args);
+    }
+    
+    
+    /*else if ("setMetadata".equals(args[0])) {
       CIM11Metadata.main(args);
     }else if ("getMetadata".equals(args[0])) {
       GetMetadata.main(args);
