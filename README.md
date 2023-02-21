@@ -131,6 +131,8 @@ owlModelingFileNameEN_FR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-F
 ##### 2. Convertir CIM11 en format OWL:
 
 * Exécuter la commande `java -jar icd11-owl-version.jar concatenateCim11`.
+  ##### Rq: modifier  IRI de owlModelingFileNameFR ou  owlModelingFileNameEN avant de lancer le script
+
 * Le programme prend en entré le deux  fichier:  
 
     * `owlModelingFileNameFR` : CIM11 sous format OWL.
