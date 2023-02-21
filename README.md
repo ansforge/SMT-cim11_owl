@@ -10,9 +10,9 @@ Dans le fichier `configuration.properties`, mettre à  jour les paramètres sui
 
 ```java
 # URL d'accès à  la API CIM11 en ligne
-entityURI = https://id.who.int/icd/entity
+entityURI = https://id.who.int/icd/release/11/2023-01/mms
 # racine et nom du fichier Ontology CIM11 sous format JSON en local
-jsonFileName = C:\\Users\\agochath\\Documents\\cim11\\CIM11JSON-V0419.json
+jsonFileName = D:\\cim11\\mms\\test\\CIM11_JSON_R202301_FR.json
 # Paramètres sécurités d'acces à  la API CIM11
 TOKEN_ENPOINT = https://icdaccessmanagement.who.int/connect/token
 CLIENT_ID = 53f52cc7-32e7-41d7-a3ff-f1c0bcc2ad9c_3a1bab2f-57fb-4489-b322-87e59609db7c
