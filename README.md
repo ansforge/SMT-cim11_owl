@@ -9,6 +9,8 @@ This repository will contains all scripts used to convert and extract ICD-11 fro
 Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
 
 ```java
+# language selectionnée
+cimLanguage = fr
 # URL d'accès à  la API CIM11 en ligne
 entityURI = https://id.who.int/icd/release/11/2023-01/mms
 # racine et nom du fichier Ontology CIM11 sous format JSON en local
