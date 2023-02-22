@@ -1,178 +1,145 @@
-# SMT-ICD11
-This repository will contains all scripts used to convert and extract ICD-11 from OMS website to the SMT
+# CIM-11-MMS en OWL
 
-##### Rq: Refaire tous les étapes avec modifications dans le fichier 
-`configuration.properties` :
- ##### cimLanguage = fr 
-  puis
- ##### cimLanguage = en
+Le répertoire contient les scripts (java) pour extraire et convertir la [CIM-11 MMS](https://icd.who.int/browse11/l-m/fr#/http%3a%2f%2fid.who.int%2ficd%2fentity%2f1136813326) à partir des [APIs de l'OMS](https://icd.who.int/icdapi) .
+
+La création du fichier de la CIM-11-MMS passe par 4 étapes (qui va inclure le français et l'anglais) : 
 
 
-## Streaming CIM11 sous format JSONLD<a id="streamingcim"></a>
+1. Extraire la CIM-11 au format [JSON-LD](https://json-ld.org/) depuis l'API OMS.
+2. Convertir la CIM-11 du format JSON-LD vers le format [RDF/SKOS](https://www.w3.org/TR/skos-reference/).
+3. Génrer le fichier en [OWL](https://www.w3.org/OWL/), qui est le format utilisé sur le [SMT](https://smt.esante.gouv.fr/).
+4. Concaténer les deux versions en français en anglais pour au final avoir un seule fichier OWL comme celui publié sur le SMT.
 
-##### 1. Configurations:
+
+
+
+
+### Extraire la CIM-11 sous format JSON-LD ###
+
+#### 1. Mettre à jours le fichier de configurations:
 
 Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
 
-```java
-# language selectionnée
+
+#### - le paramètre pour la langue : #### 
+
+````
 cimLanguage = fr
-# URL d'accès à  la API CIM11 en ligne
+#cimLanguage = en 
+````
+
+#### - le paramètre pour l'URI d'accès à l'API de l'OMS : #### 
+
+````
 entityURI = https://id.who.int/icd/release/11/2023-01/mms
-# racine et nom du fichier Ontology CIM11 sous format JSON en local
-jsonFileName = D:\\cim11\\mms\\test\\CIM11_JSON_R202301_FR.json
-# Paramètres sécurités d'acces à  la API CIM11
+
+````
+
+#### - le nom de fichier du fichier généré au format JSON-LD : #### 
+
+````
+jsonFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_jsonld.json
+
+````
+
+#### - les paramètres de connexion à l'API : ####
+
+```java
+Paramètres sécurités d'acces à  la API CIM11
+
 TOKEN_ENPOINT = https://icdaccessmanagement.who.int/connect/token
-CLIENT_ID = 53f52cc7-32e7-41d7-a3ff-f1c0bcc2ad9c_3a1bab2f-57fb-4489-b322-87e59609db7c
-CLIENT_SECRET = KsogkUqIYGfNNuV7WTtP8cH0lvx/DQv8tv0QQoUieI4=
+CLIENT_ID = ***
+CLIENT_SECRET = ***
 SCOPE = icdapi_access
 GRANT_TYPE = client_credentials
 ```
 
-##### 2. Streaming de CIM11 sous format JSONLD
+#### 2. Lancer le script d'extraxtion :
 
-* Exécuter la commande `java -jar icd11-owl-version.jar streamICD` pour streamer CIM11 dans le fichier `jsonFileName`.
-
-##  Convertir CIM11-JSONLD en format CIM11-RDF/SKOS<a id="jsontordfskos"></a>
-
-##### 1. Configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
-
-```java
-# racine et nom du fichier Ontology CIM11 sous format SKOS
-firstSkosFileName = D:\\cim11\\mms\\test\\CIM11-MMS-SKOS-R202301-FR-V1.xml
-# racine et nom du fichier Ontology CIM11 sous format SKOS
-skosFileName = D:\\cim11\\mms\\test\\CIM11-MMS-SKOS-R202301-FR.xml
-# racine et nom du fichier Ontology CIM11 sous format JSON en local
-jsonFileName = D:\\cim11\\mms\\test\\CIM11_JSON_R202301_FR.json
-```
-
-##### 2. Convertir CIM11-JSONLD en format CIM11-RDF/SKOS:
-
-* Exécuter la commande `java -jar icd11-owl-version.jar json2rdf`.
-* Le programme prend en entré le fichier `jsonFileName`. 
-* En sortie, il y a deux fichiers:
-
-    * `skosFileName` : CIM11 sous format RDF/SKOS.
-    * `labelFileName` : CIM11 sous format RDF/SKOS.
+`java -jar icd11-owl-version.jar streamICD`.
 
 
-## Convertir CIM11 en format OWL<a id="toowl"></a>
+### Convertir le fichier JSON-LD vers RDF/SKOS ###
 
-##### 1. Configurations:
+#### 1. Mettre à jours le fichier de configurations:
 
-Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
+Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
 
-```java
-# racine et nom du fichier Ontology CIM11 sous format SKOS
-skosFileName = D:\\cim11\\mms\\test\\CIM11-MMS-SKOS-R202301-FR.xml
-# fichier Ontology CIM11 sous format OWL
-owlFileName = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MM-R202301-FR-V1.owl
-# fichier Ontology CIM11 sous format OWL
-owlFileName1 = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-FR-V0.owl
-```
+#### - racine et nom du fichier sous le format SKOS : #### 
 
-##### 2. Convertir CIM11 en format OWL:
+````
+skosFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos.xml
 
-* Exécuter la commande `java -jar icd11-owl-version.jar skos2owl`.
-* Le programme prend en entré le fichier:  
-
-    * `skosFileName` : CIM11 sous format RDF/SKOS.
-    
-
-* En sortie, il y a un fichier:
-
-    * `owlFileName` : CIM11 sous format OWL.
-    * `owlFileName1` : CIM11 sous format OWL.
+````
 
 
-## Modeling Ontology CIM11 <a id="toowl"></a>
+#### 2. Lancer le script de conversion :
 
-##### 1. Configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
-
-```java
-# fichier Ontology CIM11 sous format OWL
-owlFileName = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MM-R202301-FR-V1.owl
-# fichier Ontology CIM11 sous format OWL
-owlModelingFileNameFR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
-```
-
-##### 2. Convertir CIM11 en format OWL:
-
-* Exécuter la commande `java -jar icd11-owl-version.jar modelingMmsCim11`.
-* Le programme prend en entré le fichier:  
-
-    * `owlFileName` : CIM11 sous format OWL.
-    
-
-* En sortie, il y a un fichier:
-
-    * `owlModelingFileNameFR` : CIM11 sous format OWL.
+`java -jar icd11-owl-version.jar json2rdf`.
 
 
-## Concatenation Ontology CIM11 FR et EN <a id="toowl"></a>
-
-##### 1. Configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
-
-```java
-# fichier Ontology CIM11 en Francais sous format OWL générer à l'étape précedante 
-owlModelingFileNameFR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
-# fichier Ontology CIM11 en anglais sous format OWL générer à l'étape précedante
-owlModelingFileNameEN = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202301-EN-V2.owl
-# fichier Ontology CIM11 FR\EN
-owlModelingFileNameEN_FR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-FR-V2.owl
-```
-
-##### 2. Convertir CIM11 en format OWL:
-
-* Exécuter la commande `java -jar icd11-owl-version.jar concatenateCim11`.
-  ##### Rq: modifier  IRI de owlModelingFileNameFR ou  owlModelingFileNameEN avant de lancer le script
-
-* Le programme prend en entré le deux  fichier:  
-
-    * `owlModelingFileNameFR` : CIM11 sous format OWL.
-    * `owlModelingFileNameEN` : CIM11 sous format OWL.
-    
-
-* En sortie, il y a un fichier:
-
-    * `owlModelingFileNameEN_FR` : CIM11 sous format OWL.
+### Convertir SKOS en OWL ###
 
 
-## Correction Ontology CIM11  <a id="toowl"></a>
+#### 1. Mettre à jours le fichier de configurations:
 
-##### 1. Configurations:
+Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
 
-Dans le fichier `configuration.properties`, mettre à  jour les parameètres suivants : 
+#### - racine et nom du fichier sous le format OWL : #### 
 
-```java
+````
+owlFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl.owl
 
-# fichier Ontology CIM11 FR\EN
-owlModelingFileNameEN_FR = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-FR-V2.owl
-# fichier Ontology finale CIM11 FR\EN
-owlModelingFileNameEN_FR_2 = D:\\cim11\\mms\\test\\CGTS_SEM_ICD11-MMS-R202202-EN-FR-V3.owl
-```
+````
 
-##### 2. Convertir CIM11 en format OWL:
 
-* Exécuter la commande `java -jar icd11-owl-version.jar finalCim11`.
-  
-* Le programme prend en entré le deux  fichier:  
+#### 2. Lancer le script de conversion :
 
-    * `owlModelingFileNameEN_FR` : CIM11 sous format OWL.
-    
-    
-
-* En sortie, il y a un fichier:
-
-    * `owlModelingFileNameEN_FR_2` : CIM11 sous format OWL.
+`java -jar icd11-owl-version.jar skos2owl`.
 
 
 
-  
 
+### Mettre en forme le fichier OWL par rapport au modèle ###
+
+#### 1. Mettre à jours le fichier de configurations:
+
+Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
+
+#### - l'ontologie finale CIM11 sous format OWL : #### 
+
+````
+owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
+
+````
+
+
+#### 2. Lancer le script de conversion :
+
+`java -jar icd11-owl-version.jar modelingMmsCim11`
+
+
+### Concaténation des version en français et en anglais ###
+
+#### 1. Mettre à jours le fichier de configurations:
+
+Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
+
+#### - le fichier OWL en fr : #### 
+
+````
+owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr.owl
+
+````
+
+#### - le fichier OWL en en : #### 
+
+````
+owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_en.owl
+
+````
+
+
+#### 2. Lancer le script de concaténation:
+
+`java -jar icd11-owl-version.jar concatenateCim11`
