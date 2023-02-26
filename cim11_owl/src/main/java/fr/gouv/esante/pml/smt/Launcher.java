@@ -1,16 +1,28 @@
 package fr.gouv.esante.pml.smt;
 
 
+import java.io.File;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+
 import fr.gouv.esante.pml.smt.cim11.ConcatenateTwoOntologyCim11;
 import fr.gouv.esante.pml.smt.cim11.CorrectionBlockIDOntologyCim11;
+import fr.gouv.esante.pml.smt.cim11.DeleteTemporaireFile;
 import fr.gouv.esante.pml.smt.cim11.GetICDFromAPI;
 import fr.gouv.esante.pml.smt.cim11.JsonToRDFClient;
 import fr.gouv.esante.pml.smt.cim11.ModelingOntologyFoundationCim11;
 import fr.gouv.esante.pml.smt.cim11.ModelingOntologyMmsCim11;
 import fr.gouv.esante.pml.smt.cim11.SKOSToOWL;
+import fr.gouv.esante.pml.smt.utils.PropertiesUtil;
 
 public class Launcher {
   public static void main(final String... args) throws Exception {
+	  
+	  
+	    
 
     if (args.length == 0) {
       System.out.println("Erreur! il manque des paramètres.");
@@ -41,10 +53,90 @@ public class Launcher {
     	ModelingOntologyFoundationCim11.main(args);
     }
     else if ("concatenateCim11".equals(args[0])) {
-    	ConcatenateTwoOntologyCim11.main(args);
+    	Thread threadConct = new Thread(new ThreadConcatenateTwoOntologyCim11(args));
+   	    Thread threadCorrect = new Thread(new ThreadCorrectionBlockIDOntologyCim11(args));  
+   	    Thread threadRemove = new Thread(new ThreadRemoveFile2(args)); 
+   	    
+   	    threadConct.start();
+ 	
+
+          try {
+        	  threadConct.join();
+            } catch (InterruptedException e) {
+                  e.printStackTrace();
+              }
+     
+                 threadCorrect.start();
+             
+             try {
+            	 threadCorrect.join();
+             
+             } catch (InterruptedException e) {
+                 e.printStackTrace();
+             }
+             
+             threadRemove.start();
+     
     }
     else if ("finalCim11".equals(args[0])) {
     	CorrectionBlockIDOntologyCim11.main(args);
+    }
+    else if ("owlCim11Mms".equals(args[0])) {
+    	 
+    	
+    	
+    	 Thread threadGetICD = new Thread(new ThreadGetICDFromAPI(args));
+    	 Thread threadJsonToRdf = new Thread(new ThreadJsonToRDFClient(args));
+    	 Thread threadSkosToOwl = new Thread(new ThreadSKOSToOWL(args));
+    	 Thread threadModeling = new Thread(new ThreadModelingOntologyMmsCim11(args));
+    	 
+    	 Thread tRmv = new Thread(new ThreadRemoveFile(args));
+    	
+    	
+    	
+    	 threadGetICD.start();
+    	
+    	
+        try {
+        	threadGetICD.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        threadJsonToRdf.start();
+        
+        try {
+
+        	threadJsonToRdf.join();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        threadSkosToOwl.start();
+        
+
+        try {
+        	threadSkosToOwl.join();
+        	
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        threadModeling.start();
+        
+        
+        
+        try {
+
+        	threadModeling.join();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        
+        tRmv.start();
+
     }
     
     

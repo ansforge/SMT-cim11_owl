@@ -1,12 +1,20 @@
 package fr.gouv.esante.pml.smt.cim11;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
+import org.apache.jena.sparql.function.library.langeq;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -65,6 +73,28 @@ public class ModelingOntologyMmsCim11 {
   private static OWLOntology onto = null;
   
   public static void main(final String[] args) throws Exception {
+	  
+	  Options options = new Options();
+	  options.addOption("lag", "langue", true, "langue pour owl file");
+	  options.addOption("output", "output", true, "path owl File");
+	  CommandLineParser parser = new DefaultParser();
+	  CommandLine line = parser.parse(options, args);
+	  String langue = line.getOptionValue("lag");
+	  String outputFile = line.getOptionValue("output");
+	 
+	  System.out.println("lanague "+langue);
+	  System.out.println("output "+outputFile);
+	  
+	  
+	  if(langue==null) {
+		  langue = PropertiesUtil.getProperties("cimLanguage");
+	  }
+	  
+	  if(outputFile == null) {
+		  
+		  outputFile = PropertiesUtil.getProperties("owlModelingFileNameFR");
+	  }
+	  
 	    
 	    input = new FileInputStream(PropertiesUtil.getProperties("owlFileName"));
 	    manager = OWLManager.createOWLOntologyManager();
@@ -72,19 +102,19 @@ public class ModelingOntologyMmsCim11 {
 	    
 	    fact = onto.getOWLOntologyManager().getOWLDataFactory();
 	    
-	    inclusionModeling();
+	    inclusionModeling(langue);
 	    
-	    exclusionModeling();
+	    exclusionModeling(langue);
 	    
-	    indexTermModeling();
+	    indexTermModeling(langue);
 	    
-	    altLabelModeling();
+	    altLabelModeling(langue);
 	    
 	    fondationModeling();
 	    
 	    uriVersionningModeling();
 	    
-	    postcoordinationModeling(); 
+	    postcoordinationModeling(langue); 
 	    
 	  postCoordinationMMSmodifing(); //pour MMS
 	    
@@ -94,12 +124,17 @@ public class ModelingOntologyMmsCim11 {
 	    cleanning();   //MMS 
 	    cleanning2();  //MMS
 	    
-	    final OutputStream fileoutputstream = new FileOutputStream(PropertiesUtil.getProperties("owlModelingFileNameFR"));
+	    final OutputStream fileoutputstream = new FileOutputStream(outputFile);
 	    final RDFXMLDocumentFormat ontologyFormat = new RDFXMLDocumentFormat();
 	    ontologyFormat.setPrefix("icd", "http://id.who.int/icd/schema/");
 	      
 	    manager.saveOntology(onto, ontologyFormat, fileoutputstream);
-
+	    
+	    //A.R
+	    input.close();
+	    
+	  //  DeleteTemporaireFile.main(args);
+	    
 	  }
   
   public static void uriVersionningModeling() {
@@ -259,7 +294,7 @@ public class ModelingOntologyMmsCim11 {
 //		
   }
    
-  public static void inclusionModeling() {
+  public static void inclusionModeling(final String langue) {
 	  onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    filter(ax -> ((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/inclusion>") ).
 	    forEach(ax -> {
@@ -268,15 +303,15 @@ public class ModelingOntologyMmsCim11 {
 	      });
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    forEach(ax -> {
-	    	if(genIdIncl.containsKey(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()) && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+PropertiesUtil.getProperties("cimLanguage"))) {
+	    	if(genIdIncl.containsKey(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()) && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+langue)) {
 	    		
 	    		OWLAnnotationProperty altLabel = new OWLAnnotationPropertyImpl(SKOSVocabulary.ALTLABEL.getIRI());
-	    		OWLAnnotation annot = fact.getOWLAnnotation(altLabel, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), PropertiesUtil.getProperties("cimLanguage")));
+	    		OWLAnnotation annot = fact.getOWLAnnotation(altLabel, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), langue));
 	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(genIdIncl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())), annot);
 	    		manager.applyChange(new AddAxiom(onto, axiom));
 	    		
 	    		OWLAnnotationProperty ansInclusion = new OWLAnnotationPropertyImpl(ANSICD11Vocabulary.inclusion.getIRI());
-	    		OWLAnnotation annot2 = fact.getOWLAnnotation(ansInclusion, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), PropertiesUtil.getProperties("cimLanguage")));
+	    		OWLAnnotation annot2 = fact.getOWLAnnotation(ansInclusion, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), langue));
 	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(genIdIncl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 	    		manager.applyChange(new RemoveAxiom(onto, ax));
@@ -294,7 +329,7 @@ public class ModelingOntologyMmsCim11 {
 	    			String note = "Includes :\n  - " + ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1);
 	    			InclusionNote.put(genIdIncl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()), note);
 	    			
-	    			String noteXML = "<div xml:lang=\""+ PropertiesUtil.getProperties("cimLanguage") +"\">Includes : <ul><li>" + ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1) + "</li></ul></div>";
+	    			String noteXML = "<div xml:lang=\""+ langue +"\">Includes : <ul><li>" + ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1) + "</li></ul></div>";
 	    			InclusionNoteXML.put(genIdIncl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()), noteXML);
 	    		}
 	    		
@@ -307,7 +342,7 @@ public class ModelingOntologyMmsCim11 {
 	      });
 	    for(String subject : InclusionNote.keySet()) {
 	    	OWLAnnotationProperty inclusionNote = new OWLAnnotationPropertyImpl(XSkosVocabulary.inclusionNote.getIRI());
-  		OWLAnnotation annot = fact.getOWLAnnotation(inclusionNote, fact.getOWLLiteral(InclusionNote.get(subject), PropertiesUtil.getProperties("cimLanguage")));
+  		OWLAnnotation annot = fact.getOWLAnnotation(inclusionNote, fact.getOWLLiteral(InclusionNote.get(subject), langue));
   		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(subject), annot);
   		manager.applyChange(new AddAxiom(onto, axiom));
 	    }
@@ -322,7 +357,7 @@ public class ModelingOntologyMmsCim11 {
 	    
   }
   
-  public static void exclusionModeling() {
+  public static void exclusionModeling(final String langue) {
 
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    filter(ax -> ((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/exclusion>") ).
@@ -352,7 +387,7 @@ public class ModelingOntologyMmsCim11 {
 	    			
 			        manager.applyChange(new RemoveAxiom(onto, ax));
 	    			
-	    		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+PropertiesUtil.getProperties("cimLanguage"))) {
+	    		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+langue)) {
 	    			
 	    		
 		    		if(ExclusionNote.containsKey(genIdExcl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()))) {
@@ -368,7 +403,7 @@ public class ModelingOntologyMmsCim11 {
 		    			String note = "Excludes :\n  - " + ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1);
 		    			ExclusionNote.put(genIdExcl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()), note);
 		    			
-		    			String noteXML = "<div xml:lang=\""+ PropertiesUtil.getProperties("cimLanguage") +"\">Excludes : <ul><li>" + ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1) + "</li></ul></div>";
+		    			String noteXML = "<div xml:lang=\""+ langue +"\">Excludes : <ul><li>" + ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1) + "</li></ul></div>";
 		    			ExclusionNoteXML.put(genIdExcl.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString()), noteXML);
 		    		}
 		    		manager.applyChange(new RemoveAxiom(onto, ax));
@@ -386,7 +421,7 @@ public class ModelingOntologyMmsCim11 {
 	      });
 	    for(String subject : ExclusionNote.keySet()) {
 	    	OWLAnnotationProperty exclusionNote = new OWLAnnotationPropertyImpl(XSkosVocabulary.exclusionNote.getIRI());
-  		OWLAnnotation annot = fact.getOWLAnnotation(exclusionNote, fact.getOWLLiteral(ExclusionNote.get(subject), PropertiesUtil.getProperties("cimLanguage")));
+  		OWLAnnotation annot = fact.getOWLAnnotation(exclusionNote, fact.getOWLLiteral(ExclusionNote.get(subject), langue));
   		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(subject), annot);
   		manager.applyChange(new AddAxiom(onto, axiom));
 	    }
@@ -400,7 +435,7 @@ public class ModelingOntologyMmsCim11 {
 	    }
   }
   
-  public static void indexTermModeling() {
+  public static void indexTermModeling(final String language) {
 	  onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    filter(ax -> ((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/indexTerm>") ).
 	    forEach(ax -> {
@@ -413,10 +448,10 @@ public class ModelingOntologyMmsCim11 {
 	    forEach(ax -> {
 	    	if(indexTerm.containsKey(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())) {
 	    		
-	    		if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+PropertiesUtil.getProperties("cimLanguage"))) {
+	    		if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+language)) {
 //	    			System.out.println(((OWLAnnotationAssertionAxiom) ax).getValue().toString());
 	    		OWLAnnotationProperty indexTermAnno = new OWLAnnotationPropertyImpl(ANSICD11Vocabulary.indexTerm.getIRI());
-	    		OWLAnnotation annot2 = fact.getOWLAnnotation(indexTermAnno, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), PropertiesUtil.getProperties("cimLanguage")));
+	    		OWLAnnotation annot2 = fact.getOWLAnnotation(indexTermAnno, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), language));
 	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(indexTerm.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 		    		
@@ -443,7 +478,7 @@ public class ModelingOntologyMmsCim11 {
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    filter(ax -> ((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/linearizationReference>") ||
 	    		((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/foundationReference>")||
-	    		(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+PropertiesUtil.getProperties("cimLanguage")) )||
+	    		(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+language) )||
 	    		((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/foundationChildElsewhere>")).
 	    forEach(ax -> {
 	    	if(foundationChild.containsKey(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())) {
@@ -467,7 +502,7 @@ public class ModelingOntologyMmsCim11 {
 	      });
   }
   
-  public static void altLabelModeling() {
+  public static void altLabelModeling(final String language) {
 	  onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    filter(ax -> ((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#altLabel>") ).
 	    forEach(ax -> {
@@ -479,10 +514,10 @@ public class ModelingOntologyMmsCim11 {
 	    forEach(ax -> {
 	    	if(indexTerm.containsKey(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())) {
 	    		
-	    		if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+PropertiesUtil.getProperties("cimLanguage"))) {
+	    		if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2008/05/skos-xl#literalForm>") && ((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("@"+language)) {
 //	    			System.out.println(((OWLAnnotationAssertionAxiom) ax).getValue().toString());
 	    		OWLAnnotationProperty indexTermAnno = new OWLAnnotationPropertyImpl(SKOSVocabulary.ALTLABEL.getIRI());
-	    		OWLAnnotation annot2 = fact.getOWLAnnotation(indexTermAnno, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), PropertiesUtil.getProperties("cimLanguage")));
+	    		OWLAnnotation annot2 = fact.getOWLAnnotation(indexTermAnno, fact.getOWLLiteral(((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].substring(1, ((OWLAnnotationAssertionAxiom) ax).getValue().toString().split("@")[0].length()-1), language));
 	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(indexTerm.get(((OWLAnnotationAssertionAxiom) ax).getSubject().toString())), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 		    		
@@ -498,7 +533,7 @@ public class ModelingOntologyMmsCim11 {
 	     
   }
   
-  public static void postcoordinationModeling() {
+  public static void postcoordinationModeling(final String langue) {
 	  
 	  OWLClass owlClassPostcoordination = fact.getOWLClass(IRI.create("https://data.esante.gouv.fr/oms/cim11/schema#PostCoordinationScaleInfo"));
 	  OWLAxiom declarePostcoordination = fact.getOWLDeclarationAxiom(owlClassPostcoordination);
@@ -507,7 +542,7 @@ public class ModelingOntologyMmsCim11 {
 	  OWLSubClassOfAxiom ax3 = fact.getOWLSubClassOfAxiom(owlClassPostcoordination, fact.getOWLClass(IRI.create("http://id.who.int/icd/release/11/mms")));
 		manager.applyChange(new AddAxiom(onto, ax3));
 	  
-	  OWLAnnotation annot1 = fact.getOWLAnnotation(fact.getRDFSLabel(), fact.getOWLLiteral("PostCoordinationScaleInfo", PropertiesUtil.getProperties("cimLanguage")));
+	  OWLAnnotation annot1 = fact.getOWLAnnotation(fact.getRDFSLabel(), fact.getOWLLiteral("PostCoordinationScaleInfo", langue));
 	  OWLAxiom axiom1 = fact.getOWLAnnotationAssertionAxiom(IRI.create("https://data.esante.gouv.fr/oms/cim11/schema#PostCoordinationScaleInfo"), annot1);
 	  manager.applyChange(new AddAxiom(onto, axiom1));
 	  
@@ -551,11 +586,11 @@ public class ModelingOntologyMmsCim11 {
 				+ entityLabel.get(key.substring(0, key.indexOf("postcoordinationScale")-1))
 				+ " "
 				+ axe;
-				OWLAnnotation annot2 = fact.getOWLAnnotation(fact.getRDFSLabel(), fact.getOWLLiteral(Label, PropertiesUtil.getProperties("cimLanguage")));
+				OWLAnnotation annot2 = fact.getOWLAnnotation(fact.getRDFSLabel(), fact.getOWLLiteral(Label, langue));
 	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(iri), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 	    		
-	    		OWLAnnotation annot = fact.getOWLAnnotation(fact.getRDFSLabel(), fact.getOWLLiteral(axe, PropertiesUtil.getProperties("cimLanguage")));
+	    		OWLAnnotation annot = fact.getOWLAnnotation(fact.getRDFSLabel(), fact.getOWLLiteral(axe, langue));
 	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create("https://data.esante.gouv.fr/oms/cim11/schema#PostCoordinationScaleInfo-"+axe), annot);
 	    		manager.applyChange(new AddAxiom(onto, axiom));
 	    	}

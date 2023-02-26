@@ -14,6 +14,11 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.net.ssl.HttpsURLConnection;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -55,6 +60,27 @@ public class GetICDFromAPI {
   static String dataFR = null;
 
   public static void main(final String[] args) throws Exception {
+	  
+	  
+	  Options options = new Options();
+	  options.addOption("lag", "langue", true, "langue pour owl file");
+	  options.addOption("output", "output", true, "path owl File");
+	  CommandLineParser parser = new DefaultParser();
+	  CommandLine line = parser.parse(options, args);
+	  String langue = line.getOptionValue("lag");
+	  //String output = line.getOptionValue("output");
+	 
+	  //System.out.println("lanague "+langue);
+	  //System.out.println("output "+output);
+	  
+	  
+	  if(langue==null) {
+		  
+		  langue =PropertiesUtil.getProperties("cimLanguage");
+	  }
+	  
+	  
+	 // System.out.println("**lanague "+langue);
 
 //    String uri = "https://icdapi.azurewebsites.net/icd/entity";
 //    String uri = "https://id.who.int/icd/release/11/2020-09/mms/codeinfo/2A00.0";
@@ -63,7 +89,7 @@ public class GetICDFromAPI {
     fout = new FileOutputStream(jsonFileName);
     token = getToken();
     System.out.println("Getting first token: " + token);
-    data = getURI(token, entityURI);
+    data = getURI(token, entityURI, langue);
     System.out.println("Getting first entity: " + data);
 //    dataFR = getURIfr(token, entityURI);
 //    System.out.println(data);
@@ -89,17 +115,19 @@ public class GetICDFromAPI {
       if (predicate.toString().equals("http://www.w3.org/2004/02/skos/core#narrower")
           /* && !idConcept.contains(object.toString())*/ ) {
 //        idConcept.add(object.toString());
-    	  getData(object.toString().replace("http://id.who.int", "https://id.who.int"));
+    	  getData(object.toString().replace("http://id.who.int", "https://id.who.int"), langue);
       }
     }
-    m.write(fout, "JSONLD");
-    
-
+   
+      m.write(fout, "JSONLD");
+      
+      //A.R
+      fout.close();
   }
 
 
 
-  public static void getData(final String uri) {
+  public static void getData(final String uri, final String langue) {
     try {
 //    System.out.println("Traitement num : " + nb);
     nb++;
@@ -108,7 +136,7 @@ public class GetICDFromAPI {
       System.out.println("Getting token: " + token);
     }
 
-    data = getURI(token, uri);
+    data = getURI(token, uri, langue);
 //    dataFR = getURIfr(token, uri);
 //    System.out.println(data);
     final OntModel m2 = ModelFactory.createOntologyModel();
@@ -141,7 +169,7 @@ public class GetICDFromAPI {
       if (predicate.toString().equals("http://www.w3.org/2004/02/skos/core#narrower")
               && !idConcept.contains(object.toString())) {
             idConcept.add(object.toString());
-        	  getData(object.toString().replace("http://id.who.int", "https://id.who.int"));
+        	  getData(object.toString().replace("http://id.who.int", "https://id.who.int"), langue);
           }
     }
     }catch(Exception ex) {
@@ -190,7 +218,7 @@ public class GetICDFromAPI {
 
 
   // access ICD API
-  private static String getURI(final String token, final String uri) throws Exception {
+  private static String getURI(final String token, final String uri, final String langue) throws Exception {
 
     // System.out.println("Getting URI...");
 //	  System.setProperty("http.proxyHost", "grpxy-vip.grita.fr");
@@ -204,7 +232,7 @@ public class GetICDFromAPI {
     // HTTP header fields to set
     con.setRequestProperty("Authorization", "Bearer " + token);
     con.setRequestProperty("Accept", "application/json");
-    con.setRequestProperty("Accept-Language", PropertiesUtil.getProperties("cimLanguage"));
+    con.setRequestProperty("Accept-Language", langue);
     con.setRequestProperty("API-Version", "v2");
 
     final BufferedReader in =

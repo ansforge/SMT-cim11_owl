@@ -3,6 +3,7 @@ package fr.gouv.esante.pml.smt.cim11;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class JsonToRDFClient {
 
   private static String jsonFileName = PropertiesUtil.getProperties("jsonFileName");
   private static String skosFileName = PropertiesUtil.getProperties("skosFileName");
-  private static String firstSkosFileName = PropertiesUtil.getProperties("firstSkosFileName");
+  private static String skosFileNameTmp = PropertiesUtil.getProperties("skosFileNameTmp");
 
   public static void main(final String[] args) throws IOException, OWLException {
 
@@ -55,7 +56,7 @@ public class JsonToRDFClient {
     RDFParser.create().lang(Lang.JSONLD).source(in).context(cxt).parse(m);
     System.out.println("parsed.");
     final ByteArrayOutputStream out = new ByteArrayOutputStream();
-    final OutputStream fileoutputstream = new FileOutputStream(firstSkosFileName);
+    final OutputStream fileoutputstream = new FileOutputStream(skosFileNameTmp);
     System.out.println("writting...");
     m.write(out, "RDFJSON");
     System.out.println("writed.");
@@ -78,6 +79,9 @@ public class JsonToRDFClient {
     manager.saveOntology(ontology, ontologyFormat, fileoutputstream);
     
     xmlValid();
+    
+    //A.R
+    in.close();
 
   }
   
@@ -86,7 +90,7 @@ public class JsonToRDFClient {
 	  final OutputStream fileoutputstream = new FileOutputStream(skosFileName);
 	  OutputStreamWriter osw = new OutputStreamWriter(fileoutputstream, StandardCharsets.UTF_8);
 	  
-	  FileInputStream fstream = new FileInputStream(firstSkosFileName);
+	  FileInputStream fstream = new FileInputStream(skosFileNameTmp);
 	  BufferedReader br = new BufferedReader(new InputStreamReader(fstream, StandardCharsets.UTF_8));
 
 	  String strLine;

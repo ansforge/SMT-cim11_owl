@@ -1,5 +1,6 @@
 package fr.gouv.esante.pml.smt.cim11;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -14,6 +15,10 @@ import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.apache.commons.codec.binary.Base64;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
@@ -67,6 +72,25 @@ public class CorrectionBlockIDOntologyCim11 {
   private static OWLOntology onto = null;
   
   public static void main(final String[] args) throws Exception {
+	  
+	  Options options = new Options();
+	  options.addOption("owlFR", "owlFR", true, "owl file en Francais");
+	  options.addOption("owlEN", "owlEN", true, "owl file en Anglais");
+	  options.addOption("owlFrEn", "owlFrEn", true, "owl file en Anglais");
+	  
+	  CommandLineParser parser = new DefaultParser();
+	  
+	  CommandLine line = parser.parse(options, args);
+	  
+	  String  owlFrEn = line.getOptionValue("owlFrEn");
+	  
+	  System.out.println("owlFREN "+owlFrEn);
+	  
+	  if(owlFrEn==null) {
+		  
+		  owlFrEn = PropertiesUtil.getProperties("owlModelingFileNameEN_FR_2");
+	  }
+	  
 	    
 	    input = new FileInputStream(PropertiesUtil.getProperties("owlModelingFileNameEN_FR"));
 	    manager = OWLManager.createOWLOntologyManager();
@@ -77,11 +101,19 @@ public class CorrectionBlockIDOntologyCim11 {
 	    cleanning();
 	    addNotationAndTypeModeling();
 	    
-	    final OutputStream fileoutputstream = new FileOutputStream(PropertiesUtil.getProperties("owlModelingFileNameEN_FR_2"));
+	    final OutputStream fileoutputstream = new FileOutputStream(owlFrEn);
 	    final RDFXMLDocumentFormat ontologyFormat = new RDFXMLDocumentFormat();
 	    ontologyFormat.setPrefix("icd", "http://id.who.int/icd/schema/");
 	      
 	    manager.saveOntology(onto, ontologyFormat, fileoutputstream);
+	    
+	    input.close();
+	    fileoutputstream.close();
+	    
+	  //  File owlFileFR = new File(PropertiesUtil.getProperties("jsonFileName")); 
+	    //File owlFileEN = new File(PropertiesUtil.getProperties("jsonFileName")); 
+	  //  File owlCIM11Tmp = new File(PropertiesUtil.getProperties("owlModelingFileNameEN_FR")); 
+	   // owlCIM11Tmp.delete();
 
 	  }
   

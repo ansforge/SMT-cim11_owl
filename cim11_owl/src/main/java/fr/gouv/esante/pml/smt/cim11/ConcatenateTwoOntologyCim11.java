@@ -7,6 +7,10 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.formats.RDFXMLDocumentFormat;
 import org.semanticweb.owlapi.model.AddAxiom;
@@ -52,9 +56,40 @@ public class ConcatenateTwoOntologyCim11 {
   private static OWLOntology onto2 = null;
   
   public static void main(final String[] args) throws Exception {
+	  
+	  
+	
+	  
+	  Options options = new Options();
+	  options.addOption("owlFR", "owlFR", true, "owl file en Francais");
+	  options.addOption("owlEN", "owlEN", true, "owl file en Anglais");
+	  options.addOption("owlFrEn", "owlFrEn", true, "owl file en Anglais");
+	  
+	  CommandLineParser parser = new DefaultParser();
+	  CommandLine line = parser.parse(options, args);
+	  
+	  String  owlFileFr = line.getOptionValue("owlFR");
+	  String  owlFileEn = line.getOptionValue("owlEN");
+	  
+	  System.out.println("owlFR "+owlFileFr);
+	  System.out.println("owlEN "+owlFileEn);
 	    
-	    input1 = new FileInputStream(PropertiesUtil.getProperties("owlModelingFileNameFR"));
-	    input2 = new FileInputStream(PropertiesUtil.getProperties("owlModelingFileNameEN"));
+	  
+	  if(owlFileFr==null) {
+		  
+		  owlFileFr = PropertiesUtil.getProperties("owlModelingFileNameFR");
+	  }
+	  if(owlFileEn==null) {
+		  
+		  owlFileEn = PropertiesUtil.getProperties("owlModelingFileNameEN");
+	  }
+	  
+	  
+	  input1 = new FileInputStream(owlFileFr);
+	   
+	   
+	   input2 = new FileInputStream(owlFileEn);
+	    
 	    manager = OWLManager.createOWLOntologyManager();
 	    onto1 = manager.loadOntologyFromOntologyDocument(input1);
 	    onto2 = manager.loadOntologyFromOntologyDocument(input2);
@@ -68,6 +103,8 @@ public class ConcatenateTwoOntologyCim11 {
 	    ontologyFormat.setPrefix("icd", "http://id.who.int/icd/schema/");
 	      
 	    manager.saveOntology(onto2, ontologyFormat, fileoutputstream);
+	    
+	    fileoutputstream.close();
 
 	  }
   

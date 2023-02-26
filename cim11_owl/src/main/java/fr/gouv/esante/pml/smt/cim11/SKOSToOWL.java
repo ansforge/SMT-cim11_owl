@@ -1,6 +1,7 @@
 package fr.gouv.esante.pml.smt.cim11;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
@@ -50,7 +51,7 @@ public class SKOSToOWL {
 //  private static String traductionFileName = PropertiesUtil.getProperties("traductionFileName");
   private static String skosFileName = PropertiesUtil.getProperties("skosFileName");
   private static String owlFileName = PropertiesUtil.getProperties("owlFileName");
-  private static String owlFileNameV1 = PropertiesUtil.getProperties("owlFileNameV1");
+  private static String owlFileNameTmp = PropertiesUtil.getProperties("owlFileNameTmp");
 
   public static void main(final String[] args) throws Exception {
 
@@ -104,7 +105,7 @@ public class SKOSToOWL {
     	}
     });
 
-    final OutputStream fileoutputstream = new FileOutputStream(owlFileNameV1);
+    final OutputStream fileoutputstream = new FileOutputStream(owlFileNameTmp);
     final RDFXMLDocumentFormat ontologyFormat = new RDFXMLDocumentFormat();
     ontologyFormat.setPrefix("icd", "http://id.who.int/icd/schema/");
     // List<String> labelNonTraduits = new ArrayList<String>();
@@ -157,6 +158,8 @@ public class SKOSToOWL {
     // System.out.println(key +"---"+listTraduction2.get(key));
     // }
     xmlValid();
+    
+   
   }
   
   
@@ -164,7 +167,7 @@ public class SKOSToOWL {
 	  final OutputStream fileoutputstream = new FileOutputStream(owlFileName);
 	  OutputStreamWriter osw = new OutputStreamWriter(fileoutputstream, StandardCharsets.UTF_8);
 	  
-	  FileInputStream fstream = new FileInputStream(owlFileNameV1);
+	  FileInputStream fstream = new FileInputStream(owlFileNameTmp);
 	  BufferedReader br = new BufferedReader(new InputStreamReader(fstream, StandardCharsets.UTF_8));
 
 	  String strLine;
