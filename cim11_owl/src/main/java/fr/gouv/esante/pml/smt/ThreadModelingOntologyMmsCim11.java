@@ -1,6 +1,5 @@
 package fr.gouv.esante.pml.smt;
 
-import fr.gouv.esante.pml.smt.cim11.GetICDFromAPI;
 import fr.gouv.esante.pml.smt.cim11.ModelingOntologyMmsCim11;
 
 
