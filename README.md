@@ -101,83 +101,37 @@ GRANT_TYPE = client_credentials
 ````
 
 
-### Convertir le fichier JSON-LD vers RDF/SKOS ###
-
-#### 1. Mettre à jours le fichier de configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - racine et nom du fichier sous le format SKOS : #### 
-
-````
-skosFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos.xml
-
-````
-
-
-#### 2. Lancer le script de conversion :
-
-`java -jar icd11-owl-version.jar json2rdf`.
-
-
-### Convertir SKOS en OWL ###
-
-
-#### 1. Mettre à jours le fichier de configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - racine et nom du fichier sous le format OWL : #### 
-
-````
-owlFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl.owl
-
-````
-
-
-#### 2. Lancer le script de conversion :
-
-`java -jar icd11-owl-version.jar skos2owl`.
-
-
-
-
-### Mettre en forme le fichier OWL par rapport au modèle ###
-
-#### 1. Mettre à jours le fichier de configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - l'ontologie finale CIM11 sous format OWL : #### 
-
-````
-owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
-
-````
-
-
-#### 2. Lancer le script de conversion :
-
-`java -jar icd11-owl-version.jar modelingMmsCim11`
-
-
 ### Concaténation des version en français et en anglais ###
 
 #### 1. Mettre à jours le fichier de configurations:
 
 Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
 
-#### - le fichier OWL en fr : #### 
+#### - le fichier OWL en fr : (Optionel) #### 
 
 ````
 owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr.owl
 
 ````
 
-#### - le fichier OWL en en : #### 
+#### - le fichier OWL en en : (Optionel) #### 
 
 ````
-owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_en.owl
+owlModelingFileNameEN = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_en.owl
+
+````
+
+#### - le fichier OWL temporaire en fr/en  #### 
+
+````
+owlModelingFileNameEN_FR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr_en_tmp.owl
+
+````
+
+#### - le fichier OWL  en fr/en (Optionel)  #### 
+
+````
+owlModelingFileNameEN_FR_2 = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr_en.owl
 
 ````
 
