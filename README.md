@@ -41,6 +41,40 @@ entityURI = https://id.who.int/icd/release/11/2023-01/mms
 jsonFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_jsonld.json
 
 ````
+#### - racine et nom du fichier sous le format SKOS : #### 
+
+````
+skosFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos.xml
+
+````
+
+#### - racine et nom du fichier temporaire sous le format SKOS : #### 
+
+````
+skosFileNameTmp = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos_tmp.xml
+
+````
+
+#### - racine et nom du fichier sous le format OWL : #### 
+
+````
+owlFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl.owl
+
+````
+
+#### - racine et nom du fichier temporaire sous le format OWL : #### 
+
+````
+owlFileNameTmp = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_tmp.owl
+
+````
+
+#### - l'ontologie finale CIM11 sous format OWL : (Optionel) #### 
+
+````
+owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
+
+````
 
 #### - les paramètres de connexion à l'API : ####
 
@@ -56,7 +90,9 @@ GRANT_TYPE = client_credentials
 
 #### 2. Lancer le script d'extraxtion :
 
-`java -jar icd11-owl-version.jar streamICD`.
+`java -jar icd11-owl-version.jar owlCim11Mms -langue fr -output dossier_qui_contient_le_fichier/Cim11-mms-fr.owl `.
+`java -jar icd11-owl-version.jar owlCim11Mms -langue en -output dossier_qui_contient_le_fichier/Cim11-mms-en.owl `.
+
 
 
 ### Convertir le fichier JSON-LD vers RDF/SKOS ###
