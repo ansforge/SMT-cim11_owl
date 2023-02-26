@@ -4,11 +4,8 @@ Le répertoire contient les scripts (java) pour extraire et convertir la [CIM-11
 
 La création du fichier de la CIM-11-MMS passe par 4 étapes (qui va inclure le français et l'anglais) : 
 
-
-1. Extraire la CIM-11 au format [JSON-LD](https://json-ld.org/) depuis l'API OMS.
-2. Convertir la CIM-11 du format JSON-LD vers le format [RDF/SKOS](https://www.w3.org/TR/skos-reference/).
-3. Génrer le fichier en [OWL](https://www.w3.org/OWL/), qui est le format utilisé sur le [SMT](https://smt.esante.gouv.fr/).
-4. Concaténer les deux versions en français en anglais pour au final avoir un seule fichier OWL comme celui publié sur le SMT.
+1. Génrer le fichier en [OWL](https://www.w3.org/OWL/), qui est le format utilisé sur le [SMT](https://smt.esante.gouv.fr/).
+2. Concaténer les deux versions en français en anglais pour au final avoir un seule fichier OWL comme celui publié sur le SMT.
 
 
 
