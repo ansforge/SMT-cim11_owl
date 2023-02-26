@@ -14,7 +14,7 @@ La création du fichier de la CIM-11-MMS passe par 4 étapes (qui va inclure le 
 
 
 
-### Extraire la CIM-11 sous format JSON-LD ###
+### Génerer les deux fichier FR et EN en OWL ###
 
 #### 1. Mettre à jours le fichier de configurations:
 
@@ -88,11 +88,17 @@ SCOPE = icdapi_access
 GRANT_TYPE = client_credentials
 ```
 
-#### 2. Lancer le script d'extraxtion :
+#### 2. Lancer le script de géneration du fichier :
 
+````
 `java -jar icd11-owl-version.jar owlCim11Mms -langue fr -output dossier_qui_contient_le_fichier/Cim11-mms-fr.owl `.
+
+````
+
+````
 `java -jar icd11-owl-version.jar owlCim11Mms -langue en -output dossier_qui_contient_le_fichier/Cim11-mms-en.owl `.
 
+````
 
 
 ### Convertir le fichier JSON-LD vers RDF/SKOS ###
