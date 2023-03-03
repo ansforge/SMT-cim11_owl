@@ -88,12 +88,12 @@ GRANT_TYPE = client_credentials
 #### 2. Lancer le script de géneration du fichier :
 
 ````
-`java -jar icd11-owl-version.jar owlCim11Mms -langue fr -output dossier_qui_contient_le_fichier/Cim11-mms-fr.owl `.
+`java -jar icd11-owl.jar owlCim11Mms -langue fr -output dossier_qui_contient_le_fichier/Cim11-mms-fr.owl `.
 
 ````
 
 ````
-`java -jar icd11-owl-version.jar owlCim11Mms -langue en -output dossier_qui_contient_le_fichier/Cim11-mms-en.owl `.
+`java -jar icd11-owl.jar owlCim11Mms -langue en -output dossier_qui_contient_le_fichier/Cim11-mms-en.owl `.
 
 ````
 
@@ -137,4 +137,4 @@ owlModelingFileNameEN_FR_2 = dossier_qui_contient_le_fichier/CIM11-MMS-au_format
 
 #### Rq: modifier l'URI de l'ontology FR avant de lancer le script
 
-`java -jar icd11-owl-version.jar concatenateCim11 -owlFR dossier_qui_contient_le_fichier/Cim11-mms-fr.owl -owlEN dossier_qui_contient_le_fichier/Cim11-mms-en.owl -owlENFR dossier_qui_contient_le_fichier/Cim11-mms-fr-en.owl  `
+`java -jar icd11-owl.jar concatenateCim11 -owlFR dossier_qui_contient_le_fichier/Cim11-mms-fr.owl -owlEN dossier_qui_contient_le_fichier/Cim11-mms-en.owl -owlENFR dossier_qui_contient_le_fichier/Cim11-mms-fr-en.owl  `
