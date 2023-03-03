@@ -4,17 +4,14 @@ Le répertoire contient les scripts (java) pour extraire et convertir la [CIM-11
 
 La création du fichier de la CIM-11-MMS passe par 4 étapes (qui va inclure le français et l'anglais) : 
 
-
-1. Extraire la CIM-11 au format [JSON-LD](https://json-ld.org/) depuis l'API OMS.
-2. Convertir la CIM-11 du format JSON-LD vers le format [RDF/SKOS](https://www.w3.org/TR/skos-reference/).
-3. Génrer le fichier en [OWL](https://www.w3.org/OWL/), qui est le format utilisé sur le [SMT](https://smt.esante.gouv.fr/).
-4. Concaténer les deux versions en français en anglais pour au final avoir un seule fichier OWL comme celui publié sur le SMT.
+1. Génrer le fichier en [OWL](https://www.w3.org/OWL/), qui est le format utilisé sur le [SMT](https://smt.esante.gouv.fr/).
+2. Concaténer les deux versions en français en anglais pour au final avoir un seule fichier OWL comme celui publié sur le SMT.
 
 
 
 
 
-### Extraire la CIM-11 sous format JSON-LD ###
+### Génerer les deux fichier FR et EN en OWL ###
 
 #### 1. Mettre à jours le fichier de configurations:
 
@@ -41,6 +38,40 @@ entityURI = https://id.who.int/icd/release/11/2023-01/mms
 jsonFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_jsonld.json
 
 ````
+#### - racine et nom du fichier sous le format SKOS : #### 
+
+````
+skosFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos.xml
+
+````
+
+#### - racine et nom du fichier temporaire sous le format SKOS : #### 
+
+````
+skosFileNameTmp = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos_tmp.xml
+
+````
+
+#### - racine et nom du fichier sous le format OWL : #### 
+
+````
+owlFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl.owl
+
+````
+
+#### - racine et nom du fichier temporaire sous le format OWL : #### 
+
+````
+owlFileNameTmp = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_tmp.owl
+
+````
+
+#### - l'ontologie finale CIM11 sous format OWL : (Optionel) #### 
+
+````
+owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
+
+````
 
 #### - les paramètres de connexion à l'API : ####
 
@@ -54,69 +85,17 @@ SCOPE = icdapi_access
 GRANT_TYPE = client_credentials
 ```
 
-#### 2. Lancer le script d'extraxtion :
-
-`java -jar icd11-owl-version.jar streamICD`.
-
-
-### Convertir le fichier JSON-LD vers RDF/SKOS ###
-
-#### 1. Mettre à jours le fichier de configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - racine et nom du fichier sous le format SKOS : #### 
+#### 2. Lancer le script de géneration du fichier :
 
 ````
-skosFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos.xml
+`java -jar icd11-owl-version.jar owlCim11Mms -langue fr -output dossier_qui_contient_le_fichier/Cim11-mms-fr.owl `.
 
 ````
 
-
-#### 2. Lancer le script de conversion :
-
-`java -jar icd11-owl-version.jar json2rdf`.
-
-
-### Convertir SKOS en OWL ###
-
-
-#### 1. Mettre à jours le fichier de configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - racine et nom du fichier sous le format OWL : #### 
+````
+`java -jar icd11-owl-version.jar owlCim11Mms -langue en -output dossier_qui_contient_le_fichier/Cim11-mms-en.owl `.
 
 ````
-owlFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl.owl
-
-````
-
-
-#### 2. Lancer le script de conversion :
-
-`java -jar icd11-owl-version.jar skos2owl`.
-
-
-
-
-### Mettre en forme le fichier OWL par rapport au modèle ###
-
-#### 1. Mettre à jours le fichier de configurations:
-
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - l'ontologie finale CIM11 sous format OWL : #### 
-
-````
-owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
-
-````
-
-
-#### 2. Lancer le script de conversion :
-
-`java -jar icd11-owl-version.jar modelingMmsCim11`
 
 
 ### Concaténation des version en français et en anglais ###
@@ -125,21 +104,37 @@ owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R2023
 
 Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
 
-#### - le fichier OWL en fr : #### 
+#### - le fichier OWL en fr : (Optionel) #### 
 
 ````
 owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr.owl
 
 ````
 
-#### - le fichier OWL en en : #### 
+#### - le fichier OWL en en : (Optionel) #### 
 
 ````
-owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_en.owl
+owlModelingFileNameEN = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_en.owl
+
+````
+
+#### - le fichier OWL temporaire en fr/en  #### 
+
+````
+owlModelingFileNameEN_FR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr_en_tmp.owl
+
+````
+
+#### - le fichier OWL  en fr/en (Optionel)  #### 
+
+````
+owlModelingFileNameEN_FR_2 = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr_en.owl
 
 ````
 
 
 #### 2. Lancer le script de concaténation:
 
-`java -jar icd11-owl-version.jar concatenateCim11`
+#### Rq: modifier l'URI de l'ontology FR avant de lancer le script
+
+`java -jar icd11-owl-version.jar concatenateCim11 -owlFR dossier_qui_contient_le_fichier/Cim11-mms-fr.owl -owlEN dossier_qui_contient_le_fichier/Cim11-mms-en.owl -owlENFR dossier_qui_contient_le_fichier/Cim11-mms-fr-en.owl  `
