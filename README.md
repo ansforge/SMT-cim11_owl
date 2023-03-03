@@ -137,4 +137,4 @@ owlModelingFileNameEN_FR_2 = dossier_qui_contient_le_fichier/CIM11-MMS-au_format
 
 #### Rq: modifier l'URI de l'ontology FR avant de lancer le script
 
-`java -jar icd11-owl-version.jar concatenateCim11 -owlFR dossier_qui_contient_le_fichier/Cim11-mms-fr.owl -owlEN dossier_qui_contient_le_fichier/Cim11-mms-en.owl -owlEnFr dossier_qui_contient_le_fichier/Cim11-mms-fr-en.owl  `
+`java -jar icd11-owl-version.jar concatenateCim11 -owlFR dossier_qui_contient_le_fichier/Cim11-mms-fr.owl -owlEN dossier_qui_contient_le_fichier/Cim11-mms-en.owl -owlENFR dossier_qui_contient_le_fichier/Cim11-mms-fr-en.owl  `
