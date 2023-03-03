@@ -57,9 +57,7 @@ public class ConcatenateTwoOntologyCim11 {
   
   public static void main(final String[] args) throws Exception {
 	  
-	  
-	
-	  
+	 
 	  Options options = new Options();
 	  options.addOption("owlFR", "owlFR", true, "owl file en Francais");
 	  options.addOption("owlEN", "owlEN", true, "owl file en Anglais");

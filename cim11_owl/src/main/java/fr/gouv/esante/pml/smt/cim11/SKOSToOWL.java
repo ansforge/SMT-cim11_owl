@@ -55,7 +55,7 @@ public class SKOSToOWL {
 
   public static void main(final String[] args) throws Exception {
 
-//     ChargeMapping.chargeXLXSFileToMaps(mappingFileName);
+   //     ChargeMapping.chargeXLXSFileToMaps(mappingFileName);
     // ChargeMapping.chargeCSVTraductionFileToList(traductionFileName);
     // ChargeMapping.chargeCSVTraductionFileToList2(traductionFileName);
     final SKOSToOWL sKOSToOWL = new SKOSToOWL();

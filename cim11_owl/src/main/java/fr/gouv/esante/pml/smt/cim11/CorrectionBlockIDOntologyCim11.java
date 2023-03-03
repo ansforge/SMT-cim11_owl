@@ -84,7 +84,6 @@ public class CorrectionBlockIDOntologyCim11 {
 	  
 	  String  owlFrEn = line.getOptionValue("owlFREN");
 	  
-	  
 	  if(owlFrEn==null) {
 		  
 		  owlFrEn = PropertiesUtil.getProperties("owlModelingFileNameEN_FR_2");
