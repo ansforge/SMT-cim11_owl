@@ -76,15 +76,14 @@ public class CorrectionBlockIDOntologyCim11 {
 	  Options options = new Options();
 	  options.addOption("owlFR", "owlFR", true, "owl file en Francais");
 	  options.addOption("owlEN", "owlEN", true, "owl file en Anglais");
-	  options.addOption("owlFrEn", "owlFrEn", true, "owl file en Anglais");
+	  options.addOption("owlFREN", "owlFREN", true, "owl file en Francais Anglais");
 	  
 	  CommandLineParser parser = new DefaultParser();
 	  
 	  CommandLine line = parser.parse(options, args);
 	  
-	  String  owlFrEn = line.getOptionValue("owlFrEn");
+	  String  owlFrEn = line.getOptionValue("owlFREN");
 	  
-	  System.out.println("owlFREN "+owlFrEn);
 	  
 	  if(owlFrEn==null) {
 		  

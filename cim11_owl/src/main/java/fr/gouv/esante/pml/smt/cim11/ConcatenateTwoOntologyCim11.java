@@ -63,7 +63,7 @@ public class ConcatenateTwoOntologyCim11 {
 	  Options options = new Options();
 	  options.addOption("owlFR", "owlFR", true, "owl file en Francais");
 	  options.addOption("owlEN", "owlEN", true, "owl file en Anglais");
-	  options.addOption("owlFrEn", "owlFrEn", true, "owl file en Anglais");
+	  options.addOption("owlFREN", "owlFREN", true, "owl file en Francais Anglais");
 	  
 	  CommandLineParser parser = new DefaultParser();
 	  CommandLine line = parser.parse(options, args);
@@ -71,8 +71,6 @@ public class ConcatenateTwoOntologyCim11 {
 	  String  owlFileFr = line.getOptionValue("owlFR");
 	  String  owlFileEn = line.getOptionValue("owlEN");
 	  
-	  System.out.println("owlFR "+owlFileFr);
-	  System.out.println("owlEN "+owlFileEn);
 	    
 	  
 	  if(owlFileFr==null) {

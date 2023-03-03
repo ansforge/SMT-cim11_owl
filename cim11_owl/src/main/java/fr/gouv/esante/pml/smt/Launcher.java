@@ -54,7 +54,7 @@ public class Launcher {
     }
     else if ("concatenateCim11".equals(args[0])) {
     	Thread threadConct = new Thread(new ThreadConcatenateTwoOntologyCim11(args));
-   	    Thread threadCorrect = new Thread(new ThreadCorrectionBlockIDOntologyCim11(args));  
+   	     Thread threadCorrect = new Thread(new ThreadCorrectionBlockIDOntologyCim11(args));  
    	    Thread threadRemove = new Thread(new ThreadRemoveFile2(args)); 
    	    
    	    threadConct.start();

@@ -82,8 +82,7 @@ public class ModelingOntologyMmsCim11 {
 	  String langue = line.getOptionValue("lag");
 	  String outputFile = line.getOptionValue("output");
 	 
-	  System.out.println("lanague "+langue);
-	  System.out.println("output "+outputFile);
+	 
 	  
 	  
 	  if(langue==null) {
@@ -110,7 +109,7 @@ public class ModelingOntologyMmsCim11 {
 	    
 	    altLabelModeling(langue);
 	    
-	    fondationModeling();
+	  //  fondationModeling();
 	    
 	    uriVersionningModeling();
 	    
@@ -132,8 +131,8 @@ public class ModelingOntologyMmsCim11 {
 	    
 	    //A.R
 	    input.close();
-	    
-	  //  DeleteTemporaireFile.main(args);
+	    fileoutputstream.close();
+	  
 	    
 	  }
   

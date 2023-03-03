@@ -159,6 +159,9 @@ public class SKOSToOWL {
     // }
     xmlValid();
     
+    //A.R
+    input.close();
+    
    
   }
   
