@@ -21,55 +21,13 @@ Dans le fichier `configuration.properties`, mettre à  jour les paramètres sui
 #### - le paramètre pour la langue : #### 
 
 ````
-cimLanguage = fr
-#cimLanguage = en 
+icd_language = fr 
 ````
 
 #### - le paramètre pour l'URI d'accès à l'API de l'OMS : #### 
 
 ````
 entityURI = https://id.who.int/icd/release/11/2023-01/mms
-
-````
-
-#### - le nom de fichier du fichier généré au format JSON-LD : #### 
-
-````
-jsonFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_jsonld.json
-
-````
-#### - racine et nom du fichier sous le format SKOS : #### 
-
-````
-skosFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos.xml
-
-````
-
-#### - racine et nom du fichier temporaire sous le format SKOS : #### 
-
-````
-skosFileNameTmp = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_skos_tmp.xml
-
-````
-
-#### - racine et nom du fichier sous le format OWL : #### 
-
-````
-owlFileName = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl.owl
-
-````
-
-#### - racine et nom du fichier temporaire sous le format OWL : #### 
-
-````
-owlFileNameTmp = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_tmp.owl
-
-````
-
-#### - l'ontologie finale CIM11 sous format OWL : (Optionel) #### 
-
-````
-owlModelingFileNameFR = dossier_qui_contient_le_fichier/CGTS_SEM_ICD11-MMS-R202301-FR-V2.owl
 
 ````
 
@@ -88,53 +46,21 @@ GRANT_TYPE = client_credentials
 #### 2. Lancer le script de géneration du fichier :
 
 ````
-`java -jar icd11-owl.jar owlCim11Mms -langue fr -output dossier_qui_contient_le_fichier/Cim11-mms-fr.owl `.
+`java -jar icd11-owl.jar owlCim11Mms -l fr -o CIM11_FR.owl `.
 
 ````
 
 ````
-`java -jar icd11-owl.jar owlCim11Mms -langue en -output dossier_qui_contient_le_fichier/Cim11-mms-en.owl `.
+`java -jar icd11-owl.jar owlCim11Mms -l en -o CIM11_EN.owl `.
 
 ````
 
 
 ### Concaténation des version en français et en anglais ###
 
-#### 1. Mettre à jours le fichier de configurations:
 
-Dans le fichier `configuration.properties`, mettre à  jour les paramètres suivants : 
-
-#### - le fichier OWL en fr : (Optionel) #### 
-
-````
-owlModelingFileNameFR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr.owl
-
-````
-
-#### - le fichier OWL en en : (Optionel) #### 
-
-````
-owlModelingFileNameEN = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_en.owl
-
-````
-
-#### - le fichier OWL temporaire en fr/en  #### 
-
-````
-owlModelingFileNameEN_FR = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr_en_tmp.owl
-
-````
-
-#### - le fichier OWL  en fr/en (Optionel)  #### 
-
-````
-owlModelingFileNameEN_FR_2 = dossier_qui_contient_le_fichier/CIM11-MMS-au_format_owl_fr_en.owl
-
-````
-
-
-#### 2. Lancer le script de concaténation:
+#### 1. Lancer le script de concaténation:
 
 #### Rq: modifier l'URI de l'ontology FR avant de lancer le script
 
-`java -jar icd11-owl.jar concatenateCim11 -owlFR dossier_qui_contient_le_fichier/Cim11-mms-fr.owl -owlEN dossier_qui_contient_le_fichier/Cim11-mms-en.owl -owlENFR dossier_qui_contient_le_fichier/Cim11-mms-fr-en.owl  `
+`java -jar icd11-owl.jar concatenateCim11 -owl_fr CIM11_FR.owl -owl_en  CIM11_EN.owl -owl_complet CIM11_COMPLETE_FR_EN.owl  `
