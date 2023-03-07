@@ -55,7 +55,7 @@ public class JsonToRDFClient {
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final OutputStream fileoutputstream = new FileOutputStream(SKOS_FILE_NAME_TMP);
         System.out.println("writting...");
-        //m.write(out, "RDFJSON");
+        m.write(out, "RDFJSON");
         RDFWriter.create().source(m).lang(Lang.RDFJSON).output(out);
         System.out.println("writed.");
 
