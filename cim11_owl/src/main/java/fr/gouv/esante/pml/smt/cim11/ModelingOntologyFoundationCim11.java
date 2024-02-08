@@ -88,7 +88,7 @@ public class ModelingOntologyFoundationCim11 {
 	    forEach(ax -> {
 	    	ax.classesInSignature().findFirst().ifPresent(clacc -> {
 	    	String iri = clacc.getIRI().getIRIString();
-	    	OWLClass owlClass = fact.getOWLClass(IRI.create(iri.replace("release/11/2023-01/mms", "release/11/mms")));
+	    	OWLClass owlClass = fact.getOWLClass(IRI.create(iri.replace("release/11/2024-01/mms", "release/11/mms")));
 			OWLAxiom declare = fact.getOWLDeclarationAxiom(owlClass);
 			manager.applyChange(new AddAxiom(onto, declare));
 	    	});
@@ -101,8 +101,8 @@ public class ModelingOntologyFoundationCim11 {
 	    	String firstIRI = Lists.newArrayList(ax.classesInSignature().iterator()).get(0).getIRI().getIRIString();
 	    	String secondIRI = Lists.newArrayList(ax.classesInSignature().iterator()).get(1).getIRI().getIRIString();
 
-			OWLClass disjClass = fact.getOWLClass(IRI.create(firstIRI.replace("release/11/2023-01/mms", "release/11/mms")));
-			OWLClass owlClass = fact.getOWLClass(IRI.create(secondIRI.replace("release/11/2023-01/mms", "release/11/mms")));
+			OWLClass disjClass = fact.getOWLClass(IRI.create(firstIRI.replace("release/11/2024-01/mms", "release/11/mms")));
+			OWLClass owlClass = fact.getOWLClass(IRI.create(secondIRI.replace("release/11/2024-01/mms", "release/11/mms")));
 			OWLDisjointClassesAxiom disjointClassesAxiom = fact.getOWLDisjointClassesAxiom(owlClass, disjClass);
 	        manager.addAxiom(onto, disjointClassesAxiom);
 	    	
@@ -111,7 +111,7 @@ public class ModelingOntologyFoundationCim11 {
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.DISJOINT_CLASSES)).
 	    forEach(ax -> {
 	    	String firstIRI = ax.classesInSignature().findFirst().get().getIRI().getIRIString();
-	    	if(firstIRI.contains("release/11/2023-01/mms")) {
+	    	if(firstIRI.contains("release/11/2024-01/mms")) {
     			manager.applyChange(new RemoveAxiom(onto, ax));
     		}
 	    	
@@ -120,8 +120,8 @@ public class ModelingOntologyFoundationCim11 {
 	    
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.SUBCLASS_OF)).
 	    forEach(ax -> {
-	    	String iriSub = ((OWLSubClassOfAxiom) ax).getSubClass().asOWLClass().getIRI().getIRIString().replace("release/11/2023-01/mms", "release/11/mms");
-	    	String iriSup = ((OWLSubClassOfAxiom) ax).getSuperClass().asOWLClass().getIRI().getIRIString().replace("release/11/2023-01/mms", "release/11/mms");
+	    	String iriSub = ((OWLSubClassOfAxiom) ax).getSubClass().asOWLClass().getIRI().getIRIString().replace("release/11/2024-01/mms", "release/11/mms");
+	    	String iriSup = ((OWLSubClassOfAxiom) ax).getSuperClass().asOWLClass().getIRI().getIRIString().replace("release/11/2024-01/mms", "release/11/mms");
 	    	
 	    	OWLSubClassOfAxiom ax1 = fact.getOWLSubClassOfAxiom(fact.getOWLClass(IRI.create(iriSub)), fact.getOWLClass(IRI.create(iriSup)));
 			manager.applyChange(new AddAxiom(onto, ax1));
@@ -129,7 +129,7 @@ public class ModelingOntologyFoundationCim11 {
 	      });
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.SUBCLASS_OF)).
 	    forEach(ax -> {
-	    	if(((OWLSubClassOfAxiom) ax).getSubClass().asOWLClass().getIRI().getIRIString().contains("release/11/2023-01/mms")) {
+	    	if(((OWLSubClassOfAxiom) ax).getSubClass().asOWLClass().getIRI().getIRIString().contains("release/11/2024-01/mms")) {
     			manager.applyChange(new RemoveAxiom(onto, ax));
     		}
 	      });
@@ -139,51 +139,51 @@ public class ModelingOntologyFoundationCim11 {
 	    	if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2004/02/skos/core#narrower>")) {
     			manager.applyChange(new RemoveAxiom(onto, ax));
     		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://data.esante.gouv.fr/ans-icd11#exclusion>")) {
-    			OWLAnnotation annot1 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2023-01/mms", "release/11/mms")));
-        		OWLAxiom axiom1 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot1);
+    			OWLAnnotation annot1 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2024-01/mms", "release/11/mms")));
+        		OWLAxiom axiom1 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot1);
         		manager.applyChange(new AddAxiom(onto, axiom1));
     		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://data.esante.gouv.fr/ans-icd11#foundationChild>")) {
-    			OWLAnnotation annot1 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2023-01/mms", "release/11/mms")));
-        		OWLAxiom axiom1 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot1);
+    			OWLAnnotation annot1 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2024-01/mms", "release/11/mms")));
+        		OWLAxiom axiom1 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot1);
         		manager.applyChange(new AddAxiom(onto, axiom1));
     		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2004/02/skos/core#prefLabel>")){
     			OWLAnnotationProperty release = new OWLAnnotationPropertyImpl(ICDVocabulary.release.getIRI());
 	    		OWLAnnotation annot = fact.getOWLAnnotation(release,IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString() ));
-	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot);
+	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot);
 	    		manager.applyChange(new AddAxiom(onto, axiom));
 	    		
 	    		OWLAnnotation annot2 = fact.getOWLAnnotation(fact.getRDFSLabel(), ((OWLAnnotationAssertionAxiom) ax).getValue());
-	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot2);
+	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 	    		
     		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/classKind>")){
     			if(((OWLAnnotationAssertionAxiom) ax).getValue().toString().contains("chapter")) {
     				String iriSup = "http://id.who.int/icd/release/11/mms";
-    		    	String iriSub = ((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms");
+    		    	String iriSub = ((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms");
     		    	
     		    	OWLSubClassOfAxiom ax1 = fact.getOWLSubClassOfAxiom(fact.getOWLClass(IRI.create(iriSub)), fact.getOWLClass(IRI.create(iriSup)));
     				manager.applyChange(new AddAxiom(onto, ax1));
     			}
 	    		
 	    		OWLAnnotation annot2 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), ((OWLAnnotationAssertionAxiom) ax).getValue());
-	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot2);
+	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 	    		
     		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/postcoordinationScale>")){
 	    		
-	    		OWLAnnotation annot2 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2023-01/mms", "release/11/mms")));
-	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot2);
+	    		OWLAnnotation annot2 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2024-01/mms", "release/11/mms")));
+	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 	    		
 //	    		OWLAnnotationProperty type = new OWLAnnotationPropertyImpl(OWLRDFVocabulary.RDF_TYPE.getIRI());
 //	    		OWLAnnotation annot = fact.getOWLAnnotation(type, IRI.create("http://data.esante.gouv.fr/ans-icd11#PostCoordinationScaleInfo"));
-//	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot);
+//	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot);
 //	    		manager.applyChange(new AddAxiom(onto, axiom));
 	    		
     		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/scaleEntity>")){
 	    		
-	    		OWLAnnotation annot2 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2023-01/mms", "release/11/mms")));
-	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot2);
+	    		OWLAnnotation annot2 = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), IRI.create(((OWLAnnotationAssertionAxiom) ax).getValue().toString().replace("release/11/2024-01/mms", "release/11/mms")));
+	    		OWLAxiom axiom2 = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot2);
 	    		manager.applyChange(new AddAxiom(onto, axiom2));
 	    		
 	    		manager.applyChange(new RemoveAxiom(onto, ax));
@@ -191,14 +191,14 @@ public class ModelingOntologyFoundationCim11 {
 	    		
     		}else {
 		    	OWLAnnotation annot = fact.getOWLAnnotation(((OWLAnnotationAssertionAxiom) ax).getProperty(), ((OWLAnnotationAssertionAxiom) ax).getValue());
-	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2023-01/mms", "release/11/mms")), annot);
+	    		OWLAxiom axiom = fact.getOWLAnnotationAssertionAxiom(IRI.create(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().replace("release/11/2024-01/mms", "release/11/mms")), annot);
 	    		manager.applyChange(new AddAxiom(onto, axiom));
     		}
 	    	
 	      });
 	    onto.axioms().filter(ax -> ax.isOfType(AxiomType.ANNOTATION_ASSERTION)).
 	    forEach(ax -> {
-	    		if(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().contains("release/11/2023-01/mms")) {
+	    		if(((OWLAnnotationAssertionAxiom) ax).getSubject().toString().contains("release/11/2024-01/mms")) {
 	    			manager.applyChange(new RemoveAxiom(onto, ax));
 	    		}else if(((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://www.w3.org/2004/02/skos/core#notation>") ||
 	    				((OWLAnnotationAssertionAxiom) ax).getProperty().toString().equals("<http://id.who.int/icd/schema/code>")) {
@@ -217,7 +217,7 @@ public class ModelingOntologyFoundationCim11 {
 	    forEach(ax -> {
 	    	ax.classesInSignature().findFirst().ifPresent(clacc -> {
 		    	String iri = clacc.getIRI().getIRIString();
-		    	if(iri.contains("release/11/2023-01/mms")) {
+		    	if(iri.contains("release/11/2024-01/mms")) {
 	    			manager.applyChange(new RemoveAxiom(onto, ax));
 	    		}
 		    	});
