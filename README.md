@@ -27,7 +27,7 @@ icd_language = fr
 #### - le paramètre pour l'URI d'accès à l'API de l'OMS : #### 
 
 ````
-entityURI = https://id.who.int/icd/release/11/2023-01/mms
+entityURI = https://id.who.int/icd/release/11/2024-01/mms
 
 ````
 
