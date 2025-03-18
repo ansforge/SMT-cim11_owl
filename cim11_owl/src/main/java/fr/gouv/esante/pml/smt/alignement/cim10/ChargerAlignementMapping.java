@@ -67,7 +67,7 @@ public class ChargerAlignementMapping {
             	 //valueListe.add(icd10Chapter.getStringCellValue()); //4 icd10Chapter
             	 //valueListe.add(icd10Title.getStringCellValue()); //5 icd10Title
             	 
-            	 listAlignementCim10.put(uri.getStringCellValue().replace("release/11/2023-01/mms", "release/11/mms"), valueListe);
+            	 listAlignementCim10.put(uri.getStringCellValue().replace("release/11/2025-01/mms", "release/11/mms"), valueListe);
    		    	 
             	  
             	  
